@@ -1,1 +1,2135 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>NEXUS AUTOMATION</title>
+
+    <meta
+        name="description"
+        content="NEXUS AUTOMATION — krachtige automation software voor Windows."
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #050811;
+            --panel: #0b1020;
+            --panel2: #101a2e;
+            --border: #17304a;
+            --text: #e9fbff;
+            --muted: #71839e;
+            --cyan: #00f5ff;
+            --purple: #9b4dff;
+            --green: #00ff9c;
+            --red: #ff3864;
+            --yellow: #ffd84d;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 20% 10%,
+                    rgba(0,245,255,.10),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 80% 20%,
+                    rgba(155,77,255,.12),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #050811 0%,
+                    #070b15 100%
+                );
+
+            color: var(--text);
+            font-family: "Segoe UI", Arial, sans-serif;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button,
+        input {
+            font-family: inherit;
+        }
+
+        .container {
+            width: min(1120px, calc(100% - 36px));
+            margin: auto;
+        }
+
+
+        /* =========================
+           NAVBAR
+        ========================= */
+
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+
+            height: 70px;
+
+            display: flex;
+            align-items: center;
+
+            background: rgba(5,8,17,.88);
+
+            border-bottom:
+                1px solid var(--border);
+
+            backdrop-filter: blur(15px);
+        }
+
+        .nav-inner {
+            width:
+                min(1120px, calc(100% - 36px));
+
+            margin: auto;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content:
+                space-between;
+        }
+
+        .logo {
+            font-size: 20px;
+
+            font-weight: 900;
+
+            letter-spacing: 7px;
+
+            color: var(--cyan);
+
+            text-shadow:
+                0 0 20px
+                rgba(0,245,255,.5);
+        }
+
+        .nav-links {
+            display: flex;
+
+            gap: 28px;
+
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            transition: .2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--cyan);
+        }
+
+
+        /* =========================
+           HERO
+        ========================= */
+
+        .hero {
+            min-height: 680px;
+
+            display: flex;
+
+            align-items: center;
+
+            text-align: center;
+
+            position: relative;
+        }
+
+        .hero-content {
+            width: 100%;
+        }
+
+        .badge {
+            display: inline-block;
+
+            padding: 8px 15px;
+
+            border:
+                1px solid rgba(0,245,255,.35);
+
+            background:
+                rgba(0,245,255,.05);
+
+            border-radius: 999px;
+
+            color: var(--cyan);
+
+            font-size: 12px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            margin-bottom: 25px;
+        }
+
+        .hero h1 {
+            font-size:
+                clamp(45px, 8vw, 92px);
+
+            line-height: .95;
+
+            letter-spacing: 8px;
+
+            font-weight: 950;
+
+            color: #fff;
+
+            text-shadow:
+                0 0 15px rgba(0,245,255,.35),
+                0 0 50px rgba(155,77,255,.18);
+        }
+
+        .hero h1 span {
+            color: var(--cyan);
+        }
+
+        .hero p {
+            max-width: 680px;
+
+            margin: 28px auto;
+
+            color: var(--muted);
+
+            font-size: 17px;
+
+            line-height: 1.8;
+        }
+
+        .buttons {
+            display: flex;
+
+            justify-content: center;
+
+            flex-wrap: wrap;
+
+            gap: 14px;
+
+            margin-top: 30px;
+        }
+
+        .btn {
+            display: inline-flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            min-width: 190px;
+
+            padding: 15px 25px;
+
+            border:
+                1px solid var(--cyan);
+
+            background:
+                rgba(0,245,255,.07);
+
+            color: var(--cyan);
+
+            font-size: 13px;
+
+            font-weight: 900;
+
+            letter-spacing: 1px;
+
+            border-radius: 7px;
+
+            cursor: pointer;
+
+            transition: .2s;
+        }
+
+        .btn:hover {
+            color: #02050a;
+
+            background: var(--cyan);
+
+            box-shadow:
+                0 0 30px
+                rgba(0,245,255,.35);
+
+            transform:
+                translateY(-2px);
+        }
+
+        .btn.exe {
+            border-color: var(--purple);
+
+            color: var(--purple);
+
+            background:
+                rgba(155,77,255,.07);
+        }
+
+        .btn.exe:hover {
+            color: white;
+
+            background: var(--purple);
+
+            box-shadow:
+                0 0 30px
+                rgba(155,77,255,.35);
+        }
+
+        .btn.green {
+            border-color: var(--green);
+
+            color: var(--green);
+        }
+
+        .btn.green:hover {
+            color: #02050a;
+
+            background: var(--green);
+
+            box-shadow:
+                0 0 30px
+                rgba(0,255,156,.3);
+        }
+
+        .btn.red {
+            border-color: var(--red);
+
+            color: var(--red);
+        }
+
+        .btn.yellow {
+            border-color: var(--yellow);
+
+            color: var(--yellow);
+        }
+
+
+        /* =========================
+           AD
+        ========================= */
+
+        .ad-wrapper {
+            margin: 10px auto 80px;
+        }
+
+        .ad {
+            min-height: 120px;
+
+            border:
+                1px dashed #28405b;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(0,245,255,.025),
+                    rgba(155,77,255,.035)
+                );
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            text-align: center;
+
+            color: var(--muted);
+
+            position: relative;
+
+            overflow: hidden;
+        }
+
+        .ad-content {
+            position: relative;
+
+            z-index: 1;
+        }
+
+        .ad-label {
+            display: block;
+
+            color: #3f536d;
+
+            font-size: 9px;
+
+            letter-spacing: 3px;
+
+            margin-bottom: 8px;
+        }
+
+        .ad strong {
+            color: #8094ad;
+        }
+
+
+        /* =========================
+           SECTIONS
+        ========================= */
+
+        section {
+            padding: 85px 0;
+        }
+
+        .section-title {
+            text-align: center;
+
+            margin-bottom: 45px;
+        }
+
+        .section-title .small {
+            color: var(--purple);
+
+            font-size: 11px;
+
+            font-weight: 900;
+
+            letter-spacing: 4px;
+
+            margin-bottom: 10px;
+        }
+
+        .section-title h2 {
+            font-size: 38px;
+
+            color: white;
+        }
+
+        .section-title p {
+            color: var(--muted);
+
+            margin-top: 12px;
+        }
+
+
+        /* =========================
+           FEATURES
+        ========================= */
+
+        .features {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 16px;
+        }
+
+        .card {
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(16,26,46,.9),
+                    rgba(11,16,32,.9)
+                );
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 10px;
+
+            padding: 28px;
+
+            transition: .25s;
+        }
+
+        .card:hover {
+            border-color:
+                rgba(0,245,255,.45);
+
+            transform:
+                translateY(-4px);
+
+            box-shadow:
+                0 15px 45px
+                rgba(0,0,0,.25);
+        }
+
+        .icon {
+            font-size: 25px;
+
+            margin-bottom: 17px;
+        }
+
+        .card h3 {
+            font-size: 16px;
+
+            margin-bottom: 10px;
+
+            color: white;
+        }
+
+        .card p {
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.7;
+        }
+
+
+        /* =========================
+           DOWNLOAD
+        ========================= */
+
+        .download-box {
+            max-width: 800px;
+
+            margin: auto;
+
+            padding: 40px;
+
+            border:
+                1px solid var(--border);
+
+            background:
+                rgba(11,16,32,.85);
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 0 60px
+                rgba(0,0,0,.2);
+        }
+
+        .price-box {
+            text-align: center;
+
+            padding: 25px;
+
+            margin-bottom: 30px;
+
+            border:
+                1px solid
+                rgba(155,77,255,.30);
+
+            background:
+                rgba(155,77,255,.05);
+
+            border-radius: 10px;
+        }
+
+        .old-price {
+            color: #66758a;
+
+            text-decoration:
+                line-through;
+
+            font-size: 25px;
+
+            margin-right: 10px;
+        }
+
+        .new-price {
+            color: var(--green);
+
+            font-size: 40px;
+
+            font-weight: 900;
+
+            text-shadow:
+                0 0 20px
+                rgba(0,255,156,.25);
+        }
+
+        .price-note {
+            color: var(--muted);
+
+            font-size: 12px;
+
+            margin-top: 8px;
+        }
+
+        .download-row {
+            display: flex;
+
+            align-items: center;
+
+            justify-content:
+                space-between;
+
+            gap: 25px;
+
+            padding: 25px 0;
+
+            border-bottom:
+                1px solid var(--border);
+        }
+
+        .download-row:last-child {
+            border-bottom: 0;
+        }
+
+        .file-info {
+            display: flex;
+
+            align-items: center;
+
+            gap: 17px;
+        }
+
+        .file-icon {
+            width: 50px;
+            height: 50px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 8px;
+
+            background:
+                rgba(0,245,255,.08);
+
+            border:
+                1px solid
+                rgba(0,245,255,.2);
+
+            color: var(--cyan);
+
+            font-weight: 900;
+        }
+
+        .file-info h3 {
+            font-size: 15px;
+        }
+
+        .file-info p {
+            color: var(--muted);
+
+            font-size: 12px;
+
+            margin-top: 4px;
+        }
+
+
+        /* =========================
+           ACCESS
+        ========================= */
+
+        .access-box {
+            margin-top: 30px;
+
+            padding: 25px;
+
+            border:
+                1px solid var(--border);
+
+            background:
+                rgba(5,8,17,.6);
+
+            border-radius: 9px;
+
+            text-align: center;
+        }
+
+        .access-box h3 {
+            color: white;
+
+            margin-bottom: 10px;
+        }
+
+        .access-box p {
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.6;
+
+            margin-bottom: 18px;
+        }
+
+        .code-input {
+            width: 100%;
+
+            max-width: 400px;
+
+            padding: 14px 16px;
+
+            background:
+                #070c17;
+
+            color: white;
+
+            border:
+                1px solid var(--border);
+
+            border-radius: 6px;
+
+            outline: none;
+
+            text-align: center;
+
+            font-size: 16px;
+
+            letter-spacing: 3px;
+
+            margin-bottom: 12px;
+        }
+
+        .code-input:focus {
+            border-color: var(--cyan);
+
+            box-shadow:
+                0 0 15px
+                rgba(0,245,255,.12);
+        }
+
+        .message {
+            min-height: 22px;
+
+            margin-top: 12px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+        }
+
+        .message.success {
+            color: var(--green);
+        }
+
+        .message.error {
+            color: var(--red);
+        }
+
+        .message.info {
+            color: var(--cyan);
+        }
+
+
+        /* =========================
+           PREMIUM
+        ========================= */
+
+        .premium-box {
+            position: relative;
+
+            overflow: hidden;
+
+            border:
+                1px solid
+                rgba(155,77,255,.35);
+
+            background:
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(155,77,255,.12),
+                    transparent 40%
+                ),
+                var(--panel);
+
+            padding: 45px;
+
+            border-radius: 12px;
+        }
+
+        .premium-box h2 {
+            color: var(--purple);
+
+            font-size: 30px;
+
+            margin-bottom: 12px;
+        }
+
+        .premium-box > p {
+            color: var(--muted);
+
+            max-width: 650px;
+
+            line-height: 1.7;
+        }
+
+        .premium-list {
+            display: grid;
+
+            grid-template-columns:
+                repeat(2, 1fr);
+
+            gap: 12px;
+
+            margin: 30px 0;
+        }
+
+        .premium-item {
+            color: var(--text);
+
+            background:
+                rgba(155,77,255,.05);
+
+            border:
+                1px solid
+                rgba(155,77,255,.12);
+
+            padding: 14px;
+
+            border-radius: 6px;
+
+            font-size: 13px;
+        }
+
+
+        /* =========================
+           INSTALLATION
+        ========================= */
+
+        .steps {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 20px;
+        }
+
+        .step {
+            text-align: center;
+
+            padding: 25px;
+        }
+
+        .number {
+            width: 50px;
+            height: 50px;
+
+            margin:
+                0 auto 18px;
+
+            display: grid;
+
+            place-items: center;
+
+            border:
+                1px solid var(--cyan);
+
+            border-radius: 50%;
+
+            color: var(--cyan);
+
+            font-weight: 900;
+        }
+
+        .step h3 {
+            margin-bottom: 9px;
+        }
+
+        .step p {
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.6;
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+            border-top:
+                1px solid var(--border);
+
+            padding: 45px 0;
+
+            background: #04070e;
+        }
+
+        .footer-inner {
+            display: flex;
+
+            justify-content:
+                space-between;
+
+            align-items: center;
+
+            gap: 20px;
+        }
+
+        .footer-logo {
+            color: var(--cyan);
+
+            font-weight: 900;
+
+            letter-spacing: 4px;
+        }
+
+        footer p {
+            color: var(--muted);
+
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media(max-width:800px) {
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                min-height: 600px;
+            }
+
+            .features,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .premium-list {
+                grid-template-columns: 1fr;
+            }
+
+            .download-row {
+                flex-direction: column;
+
+                align-items:
+                    flex-start;
+            }
+
+            .download-row .btn {
+                width: 100%;
+            }
+
+            .download-box {
+                padding: 25px;
+            }
+
+            .premium-box {
+                padding: 28px;
+            }
+
+            .footer-inner {
+                flex-direction: column;
+
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     NAVIGATION
+========================= -->
+
+<nav>
+
+    <div class="nav-inner">
+
+        <div class="logo">
+            NEXUS
+        </div>
+
+        <div class="nav-links">
+
+            <a href="#features">
+                Features
+            </a>
+
+            <a href="#download">
+                Download
+            </a>
+
+            <a href="#premium">
+                Premium
+            </a>
+
+            <a href="#install">
+                Installatie
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<main>
+
+<section class="hero">
+
+    <div class="container hero-content">
+
+        <div class="badge">
+            NEXUS AUTOMATION CORE
+        </div>
+
+        <h1>
+            NEXUS<br>
+            <span>AUTOMATION</span>
+        </h1>
+
+        <p>
+            Een krachtige Windows automation applicatie
+            met Auto Clicker, Auto Space, hotkeys en
+            uitgebreide Premium automation features.
+        </p>
+
+        <div class="buttons">
+
+            <a
+                class="btn"
+                href="#download"
+            >
+                ↓ DOWNLOAD
+            </a>
+
+            <a
+                class="btn exe"
+                href="#premium"
+            >
+                ◆ PREMIUM
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ADVERTISEMENT
+========================= -->
+
+<div class="container ad-wrapper">
+
+    <div class="ad">
+
+        <div class="ad-content">
+
+            <span class="ad-label">
+                ADVERTISEMENT
+            </span>
+
+            <strong>
+                JOUW RECLAME HIER
+            </strong>
+
+            <br>
+
+            <small>
+                Plaats hier je banner,
+                advertentie of sponsor.
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     FEATURES
+========================= -->
+
+<section id="features">
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <div class="small">
+                SYSTEM FEATURES
+            </div>
+
+            <h2>
+                Wat zit erin?
+            </h2>
+
+            <p>
+                De belangrijkste onderdelen
+                van NEXUS AUTOMATION.
+            </p>
+
+        </div>
+
+
+        <div class="features">
+
+            <div class="card">
+
+                <div class="icon">⚡</div>
+
+                <h3>
+                    Auto Clicker
+                </h3>
+
+                <p>
+                    Automatische muisklikken met
+                    instelbare clicks-per-second snelheid.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">⌨️</div>
+
+                <h3>
+                    Auto Space
+                </h3>
+
+                <p>
+                    Automatiseer de spatiebalk met
+                    een instelbare snelheid.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">🎯</div>
+
+                <h3>
+                    Random CPS
+                </h3>
+
+                <p>
+                    Premium mode met willekeurige
+                    CPS tussen minimum en maximum.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">🚀</div>
+
+                <h3>
+                    Burst Mode
+                </h3>
+
+                <p>
+                    Laat een vooraf ingesteld aantal
+                    klikken uitvoeren in bursts.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">🖱️</div>
+
+                <h3>
+                    Mouse Jitter
+                </h3>
+
+                <p>
+                    Premium muisbewegingen met
+                    instelbare afstand en delay.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">⏱️</div>
+
+                <h3>
+                    Scheduler
+                </h3>
+
+                <p>
+                    Plan automatisch wanneer de
+                    automation moet starten en stoppen.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">🛑</div>
+
+                <h3>
+                    Emergency Stop
+                </h3>
+
+                <p>
+                    Met F10 kun je de actieve
+                    automation onmiddellijk stoppen.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">⚙️</div>
+
+                <h3>
+                    Custom Hotkeys
+                </h3>
+
+                <p>
+                    Stel je eigen toetsen in voor
+                    het starten en stoppen.
+                </p>
+
+            </div>
+
+
+            <div class="card">
+
+                <div class="icon">◆</div>
+
+                <h3>
+                    Premium Core
+                </h3>
+
+                <p>
+                    Extra automation modes en
+                    uitgebreide instellingen.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     DOWNLOAD
+========================= -->
+
+<section id="download">
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <div class="small">
+                DOWNLOAD CENTER
+            </div>
+
+            <h2>
+                Download NEXUS
+            </h2>
+
+            <p>
+                Eenmalige toegang tot de software.
+            </p>
+
+        </div>
+
+
+        <div class="download-box">
+
+
+            <!-- PRICE -->
+
+            <div class="price-box">
+
+                <span class="old-price">
+                    €3,00
+                </span>
+
+                <span class="new-price">
+                    €1,99
+                </span>
+
+                <div class="price-note">
+                    Eenmalige downloadtoegang
+                </div>
+
+            </div>
+
+
+            <!-- EXE -->
+
+            <div class="download-row">
+
+                <div class="file-info">
+
+                    <div
+                        class="file-icon"
+                        style="
+                            color: var(--purple);
+                            border-color:
+                                rgba(155,77,255,.3);
+                            background:
+                                rgba(155,77,255,.08);
+                        "
+                    >
+                        EXE
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            NEXUS_AUTOMATION.exe
+                        </h3>
+
+                        <p>
+                            Windows executable
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="btn exe"
+                    onclick="requestDownload('exe')"
+                >
+                    DOWNLOAD EXE
+                </button>
+
+            </div>
+
+
+            <!-- ZIP -->
+
+            <div class="download-row">
+
+                <div class="file-info">
+
+                    <div
+                        class="file-icon"
+                        style="
+                            color: var(--green);
+                            border-color:
+                                rgba(0,255,156,.3);
+                            background:
+                                rgba(0,255,156,.08);
+                        "
+                    >
+                        ZIP
+                    </div>
+
+                    <div>
+
+                        <h3>
+                            NEXUS_AUTOMATION.zip
+                        </h3>
+
+                        <p>
+                            Complete project download
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="btn green"
+                    onclick="requestDownload('zip')"
+                >
+                    DOWNLOAD ZIP
+                </button>
+
+            </div>
+
+
+            <!-- ACCESS -->
+
+            <div class="access-box">
+
+                <h3>
+                    🔐 DOWNLOAD TOEGANG
+                </h3>
+
+                <p>
+                    Heb je toegang gekregen?
+                    Voer hieronder je persoonlijke
+                    toegangscode in.
+                </p>
+
+                <input
+                    id="accessCode"
+                    class="code-input"
+                    type="password"
+                    placeholder="TOEGANGSCODE"
+                    autocomplete="off"
+                >
+
+                <br>
+
+                <button
+                    class="btn"
+                    onclick="activateAccess()"
+                >
+                    TOEGANG ACTIVEREN
+                </button>
+
+                <div
+                    id="accessMessage"
+                    class="message"
+                ></div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     PREMIUM
+========================= -->
+
+<section id="premium">
+
+    <div class="container">
+
+        <div class="premium-box">
+
+            <h2>
+                ◆ PREMIUM CORE
+            </h2>
+
+            <p>
+                Premium breidt NEXUS uit met extra
+                automation modes en een hogere CPS-limiet.
+            </p>
+
+
+            <div class="premium-list">
+
+                <div class="premium-item">
+                    ◆ Tot 1000 CPS
+                </div>
+
+                <div class="premium-item">
+                    ◆ Random CPS
+                </div>
+
+                <div class="premium-item">
+                    ◆ Burst Mode
+                </div>
+
+                <div class="premium-item">
+                    ◆ Hold Mode
+                </div>
+
+                <div class="premium-item">
+                    ◆ Auto Scroll
+                </div>
+
+                <div class="premium-item">
+                    ◆ Mouse Jitter
+                </div>
+
+                <div class="premium-item">
+                    ◆ Scheduler
+                </div>
+
+                <div class="premium-item">
+                    ◆ Settings Presets
+                </div>
+
+            </div>
+
+
+            <a
+                class="btn exe"
+                href="#download"
+            >
+                VIEW DOWNLOADS
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     INSTALLATION
+========================= -->
+
+<section id="install">
+
+    <div class="container">
+
+        <div class="section-title">
+
+            <div class="small">
+                QUICK START
+            </div>
+
+            <h2>
+                Installatie
+            </h2>
+
+            <p>
+                In drie eenvoudige stappen
+                aan de slag.
+            </p>
+
+        </div>
+
+
+        <div class="steps">
+
+            <div class="step">
+
+                <div class="number">
+                    01
+                </div>
+
+                <h3>
+                    Toegang
+                </h3>
+
+                <p>
+                    Vraag toegang aan en ontvang
+                    je persoonlijke downloadcode.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="number">
+                    02
+                </div>
+
+                <h3>
+                    Download
+                </h3>
+
+                <p>
+                    Voer je code in en download
+                    de Windows-versie.
+                </p>
+
+            </div>
+
+
+            <div class="step">
+
+                <div class="number">
+                    03
+                </div>
+
+                <h3>
+                    Start
+                </h3>
+
+                <p>
+                    Open NEXUS_AUTOMATION.exe
+                    op je Windows-computer.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     FINAL AD
+========================= -->
+
+<div class="container ad-wrapper">
+
+    <div class="ad">
+
+        <div class="ad-content">
+
+            <span class="ad-label">
+                ADVERTISEMENT
+            </span>
+
+            <strong>
+                JOUW RECLAME
+            </strong>
+
+            <br>
+
+            <small>
+                728 × 90 banner aanbevolen
+            </small>
+
+        </div>
+
+    </div>
+
+</div>
+
+</main>
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+    <div class="container footer-inner">
+
+        <div class="footer-logo">
+            NEXUS AUTOMATION
+        </div>
+
+        <p>
+            © 2026 NEXUS AUTOMATION.
+            All rights reserved.
+        </p>
+
+        <p>
+            Automation Core
+        </p>
+
+    </div>
+
+</footer>
+
+
+<script>
+
+/*
+=========================================================
+NEXUS AUTOMATION
+TOEGANGSCODE INSTELLING
+=========================================================
+
+VERANDER DEZE CODE NAAR JE EIGEN CODE.
+
+Bijvoorbeeld:
+
+const ACCESS_CODE = "NEXUS2026";
+
+=========================================================
+*/
+
+const ACCESS_CODE = "NEXUS2026";
+
+
+/*
+=========================================================
+DOWNLOAD STATUS
+=========================================================
+*/
+
+const DOWNLOAD_USED_KEY =
+    "nexus_download_used";
+
+
+/*
+=========================================================
+ACCESS ACTIVEREN
+=========================================================
+*/
+
+function activateAccess() {
+
+    const input =
+        document.getElementById("accessCode");
+
+    const message =
+        document.getElementById("accessMessage");
+
+    const enteredCode =
+        input.value.trim();
+
+
+    if (!enteredCode) {
+
+        message.textContent =
+            "Voer een toegangscode in.";
+
+        message.className =
+            "message error";
+
+        return;
+    }
+
+
+    if (enteredCode !== ACCESS_CODE) {
+
+        message.textContent =
+            "Ongeldige toegangscode.";
+
+        message.className =
+            "message error";
+
+        return;
+    }
+
+
+    localStorage.setItem(
+        "nexus_access",
+        "true"
+    );
+
+
+    message.textContent =
+        "Toegang geactiveerd.";
+
+    message.className =
+        "message success";
+
+
+    input.value = "";
+
+
+    setTimeout(() => {
+
+        message.textContent =
+            "Je hebt nu toegang tot de download.";
+
+        message.className =
+            "message info";
+
+    }, 1000);
+}
+
+
+/*
+=========================================================
+DOWNLOAD
+=========================================================
+*/
+
+<script>
+
+/*
+=========================================================
+NEXUS AUTOMATION
+TOEGANGSCODE
+=========================================================
+
+VERANDER DEZE CODE NAAR JE EIGEN CODE.
+
+Voorbeeld:
+const ACCESS_CODE = "NEXUS2026";
+
+Geef deze code alleen aan mensen die toegang
+hebben gekregen.
+=========================================================
+*/
+
+const ACCESS_CODE = "NEXUS2026";
+
+
+/*
+=========================================================
+DOWNLOAD STATUS
+=========================================================
+*/
+
+const DOWNLOAD_USED_KEY = "nexus_download_used";
+
+
+/*
+=========================================================
+TOEGANG ACTIVEREN
+=========================================================
+*/
+
+function activateAccess() {
+
+    const input =
+        document.getElementById("accessCode");
+
+    const message =
+        document.getElementById("accessMessage");
+
+    const enteredCode =
+        input.value.trim();
+
+
+    if (!enteredCode) {
+
+        message.textContent =
+            "Voer een toegangscode in.";
+
+        message.className =
+            "message error";
+
+        return;
+    }
+
+
+    if (enteredCode !== ACCESS_CODE) {
+
+        message.textContent =
+            "Ongeldige toegangscode.";
+
+        message.className =
+            "message error";
+
+        return;
+    }
+
+
+    /*
+    Toegang opslaan op dit apparaat.
+    */
+
+    localStorage.setItem(
+        "nexus_access",
+        "true"
+    );
+
+
+    message.textContent =
+        "✓ Toegang geactiveerd.";
+
+    message.className =
+        "message success";
+
+
+    input.value = "";
+
+
+    setTimeout(() => {
+
+        message.textContent =
+            "Je hebt nu toegang tot de download.";
+
+        message.className =
+            "message info";
+
+    }, 1200);
+}
+
+
+/*
+=========================================================
+DOWNLOAD
+=========================================================
+*/
+
+function requestDownload(type) {
+
+    const hasAccess =
+        localStorage.getItem(
+            "nexus_access"
+        ) === "true";
+
+
+    const hasDownloaded =
+        localStorage.getItem(
+            DOWNLOAD_USED_KEY
+        ) === "true";
+
+
+    /*
+    -----------------------------------------
+    GEEN TOEGANG
+    -----------------------------------------
+    */
+
+    if (!hasAccess) {
+
+        const message =
+            document.getElementById(
+                "accessMessage"
+            );
+
+        message.textContent =
+            "Je hebt nog geen downloadtoegang.";
+
+        message.className =
+            "message error";
+
+
+        document
+            .getElementById("accessCode")
+            .focus();
+
+
+        return;
+    }
+
+
+    /*
+    -----------------------------------------
+    AL GEDOWNLOAD
+    -----------------------------------------
+    */
+
+    if (hasDownloaded) {
+
+        alert(
+            "Deze download is al gebruikt op dit apparaat."
+        );
+
+        return;
+    }
+
+
+    /*
+    -----------------------------------------
+    BESTAND KIEZEN
+    -----------------------------------------
+    */
+
+    let file = "";
+
+
+    if (type === "exe") {
+
+        file =
+            "downloads/NEXUS_AUTOMATION.exe";
+
+    } else if (type === "zip") {
+
+        file =
+            "downloads/NEXUS_AUTOMATION.zip";
+
+    } else {
+
+        alert(
+            "Ongeldig downloadtype."
+        );
+
+        return;
+    }
+
+
+    /*
+    -----------------------------------------
+    DOWNLOAD STARTEN
+    -----------------------------------------
+    */
+
+    const link =
+        document.createElement("a");
+
+    link.href = file;
+
+    link.download = "";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    document.body.removeChild(link);
+
+
+    /*
+    -----------------------------------------
+    DOWNLOAD ALS GEBRUIKT MARKEREN
+    -----------------------------------------
+    */
+
+    localStorage.setItem(
+        DOWNLOAD_USED_KEY,
+        "true"
+    );
+
+
+    /*
+    -----------------------------------------
+    KNOPPEN UITSCHAKELEN
+    -----------------------------------------
+    */
+
+    const buttons =
+        document.querySelectorAll(
+            '#download .download-row button'
+        );
+
+
+    buttons.forEach(button => {
+
+        button.disabled = true;
+
+        button.style.opacity = "0.45";
+
+        button.style.cursor =
+            "not-allowed";
+
+        button.textContent =
+            "DOWNLOAD GEBRUIKT";
+
+    });
+
+
+    /*
+    -----------------------------------------
+    MELDING
+    -----------------------------------------
+    */
+
+    const message =
+        document.getElementById(
+            "accessMessage"
+        );
+
+
+    message.textContent =
+        "✓ Download gestart. Je kunt deze download niet opnieuw gebruiken.";
+
+    message.className =
+        "message success";
+}
+
+
+/*
+=========================================================
+BIJ HET OPENEN VAN DE WEBSITE
+=========================================================
+*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function() {
+
+        const hasAccess =
+            localStorage.getItem(
+                "nexus_access"
+            ) === "true";
+
+
+        const hasDownloaded =
+            localStorage.getItem(
+                DOWNLOAD_USED_KEY
+            ) === "true";
+
+
+        const message =
+            document.getElementById(
+                "accessMessage"
+            );
+
+
+        /*
+        -----------------------------------------
+        TOEGANG BESTAAT
+        -----------------------------------------
+        */
+
+        if (hasAccess && !hasDownloaded) {
+
+            message.textContent =
+                "✓ Je hebt downloadtoegang.";
+
+            message.className =
+                "message success";
+        }
+
+
+        /*
+        -----------------------------------------
+        DOWNLOAD IS AL GEBRUIKT
+        -----------------------------------------
+        */
+
+        if (hasDownloaded) {
+
+            message.textContent =
+                "Deze download is al gebruikt op dit apparaat.";
+
+            message.className =
+                "message error";
+
+
+            const buttons =
+                document.querySelectorAll(
+                    '#download .download-row button'
+                );
+
+
+            buttons.forEach(button => {
+
+                button.disabled = true;
+
+                button.style.opacity = "0.45";
+
+                button.style.cursor =
+                    "not-allowed";
+
+                button.textContent =
+                    "DOWNLOAD GEBRUIKT";
+
+            });
+        }
+
+    }
+);
+
+
+/*
+=========================================================
+ESCAPE TOETS
+=========================================================
+*/
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Escape") {
+
+            const input =
+                document.getElementById(
+                    "accessCode"
+                );
+
+            if (input) {
+                input.value = "";
+            }
+
+        }
+
+    }
+);
+
+</script>
+
 
