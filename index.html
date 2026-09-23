@@ -937,6 +937,144 @@
                 text-align: center;
             }
         }
+    
+        /* =========================
+           ACCOUNT UI
+        ========================= */
+
+        .account-button {
+            min-width: auto;
+            padding: 10px 16px;
+            border-color: var(--cyan);
+        }
+
+        .account-panel {
+            margin-top: 30px;
+            padding: 28px;
+            border: 1px solid var(--border);
+            background: rgba(11,16,32,.88);
+            border-radius: 12px;
+        }
+
+        .account-panel h3 {
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .account-panel p {
+            color: var(--muted);
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .account-form {
+            display: grid;
+            gap: 12px;
+            max-width: 520px;
+        }
+
+        .account-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+            background: #070b15;
+            color: white;
+            outline: none;
+        }
+
+        .account-input:focus {
+            border-color: var(--cyan);
+            box-shadow: 0 0 20px rgba(0,245,255,.08);
+        }
+
+        .account-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .account-status {
+            min-height: 22px;
+            margin-top: 12px;
+            font-size: 13px;
+        }
+
+        .account-status.success { color: var(--green); }
+        .account-status.error { color: var(--red); }
+        .account-status.info { color: var(--cyan); }
+
+        .user-card {
+            display: none;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .user-card strong {
+            color: var(--cyan);
+        }
+
+        .credits {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 7px 12px;
+            border: 1px solid rgba(0,255,156,.25);
+            border-radius: 999px;
+            color: var(--green);
+            background: rgba(0,255,156,.05);
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        .admin-panel {
+            display: none;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid var(--border);
+        }
+
+        .admin-user {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-user:last-child {
+            border-bottom: 0;
+        }
+
+        .admin-user small {
+            color: var(--muted);
+        }
+
+        .admin-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        @media (max-width: 760px) {
+            .nav-links {
+                gap: 12px;
+            }
+
+            .nav-links a {
+                display: none;
+            }
+
+            .user-card,
+            .admin-user {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+        }
+
     </style>
 </head>
 
@@ -1374,41 +1512,92 @@
             </div>
 
 
-            <!-- ACCESS -->
+            <!-- ACCOUNT -->
 
-            <div class="access-box">
+            <div class="account-panel" id="account">
 
-                <h3>
-                    🔐 DOWNLOAD TOEGANG
-                </h3>
+                <h3>👤 NEXUS ACCOUNT</h3>
 
-                <p>
-                    Heb je toegang gekregen?
-                    Voer hieronder je persoonlijke
-                    toegangscode in.
+                <p id="accountIntro">
+                    Maak een account of log in om je persoonlijke
+                    downloadcredits te gebruiken.
                 </p>
 
-                <input
-                    id="accessCode"
-                    class="code-input"
-                    type="password"
-                    placeholder="TOEGANGSCODE"
-                    autocomplete="off"
-                >
+                <div class="account-form" id="loginForm">
 
-                <br>
+                    <input
+                        id="accountEmail"
+                        class="account-input"
+                        type="email"
+                        placeholder="E-MAIL"
+                        autocomplete="email"
+                    >
 
-                <button
-                    class="btn"
-                    onclick="activateAccess()"
-                >
-                    TOEGANG ACTIVEREN
-                </button>
+                    <input
+                        id="accountPassword"
+                        class="account-input"
+                        type="password"
+                        placeholder="WACHTWOORD"
+                        autocomplete="current-password"
+                    >
 
-                <div
-                    id="accessMessage"
-                    class="message"
-                ></div>
+                    <input
+                        id="accountUsername"
+                        class="account-input"
+                        type="text"
+                        placeholder="GEBRUIKERSNAAM — alleen nodig bij registreren"
+                        autocomplete="username"
+                    >
+
+                    <div class="account-actions">
+                        <button class="btn" onclick="login()">
+                            INLOGGEN
+                        </button>
+
+                        <button class="btn green" onclick="registerAccount()">
+                            ACCOUNT MAKEN
+                        </button>
+                    </div>
+
+                    <div id="accountMessage" class="account-status"></div>
+
+                </div>
+
+
+                <div class="user-card" id="userCard">
+
+                    <div>
+                        <div>
+                            Ingelogd als
+                            <strong id="usernameDisplay">-</strong>
+                        </div>
+
+                        <div class="credits">
+                            DOWNLOADCREDITS:
+                            <span id="creditsDisplay">0</span>
+                        </div>
+                    </div>
+
+                    <button class="btn red" onclick="logout()">
+                        UITLOGGEN
+                    </button>
+
+                </div>
+
+
+                <div class="admin-panel" id="adminPanel">
+
+                    <h3>🛡️ ADMIN DASHBOARD</h3>
+
+                    <p>
+                        Hier kun je gebruikers bekijken en downloadcredits geven.
+                    </p>
+
+                    <div id="adminUsers">
+                        Gebruikers laden...
+                    </div>
+
+                </div>
 
             </div>
 
@@ -1638,498 +1827,591 @@
 
 
 <script>
-
 /*
 =========================================================
-NEXUS AUTOMATION
-TOEGANGSCODE INSTELLING
+NEXUS AUTOMATION ACCOUNT SYSTEM
 =========================================================
 
-VERANDER DEZE CODE NAAR JE EIGEN CODE.
-
-Bijvoorbeeld:
-
-const ACCESS_CODE = "NEXUS2026";
-
-=========================================================
-*/
-
-const ACCESS_CODE = "NEXUS2026";
-
-
-/*
-=========================================================
-DOWNLOAD STATUS
-=========================================================
-*/
-
-const DOWNLOAD_USED_KEY =
-    "nexus_download_used";
-
-
-/*
-=========================================================
-ACCESS ACTIVEREN
-=========================================================
-*/
-
-function activateAccess() {
-
-    const input =
-        document.getElementById("accessCode");
-
-    const message =
-        document.getElementById("accessMessage");
-
-    const enteredCode =
-        input.value.trim();
-
-
-    if (!enteredCode) {
-
-        message.textContent =
-            "Voer een toegangscode in.";
-
-        message.className =
-            "message error";
-
-        return;
-    }
-
-
-    if (enteredCode !== ACCESS_CODE) {
-
-        message.textContent =
-            "Ongeldige toegangscode.";
-
-        message.className =
-            "message error";
-
-        return;
-    }
-
-
-    localStorage.setItem(
-        "nexus_access",
-        "true"
-    );
-
-
-    message.textContent =
-        "Toegang geactiveerd.";
-
-    message.className =
-        "message success";
-
-
-    input.value = "";
-
-
-    setTimeout(() => {
-
-        message.textContent =
-            "Je hebt nu toegang tot de download.";
-
-        message.className =
-            "message info";
-
-    }, 1000);
-}
-
-
-/*
-=========================================================
-DOWNLOAD
-=========================================================
-*/
-
-<script>
-
-/*
-=========================================================
-NEXUS AUTOMATION
-TOEGANGSCODE
-=========================================================
-
-VERANDER DEZE CODE NAAR JE EIGEN CODE.
+BELANGRIJK:
+Verander alleen deze URL naar jouw PHP-backend.
 
 Voorbeeld:
-const ACCESS_CODE = "NEXUS2026";
+https://api.jouwdomein.nl/api.php
 
-Geef deze code alleen aan mensen die toegang
-hebben gekregen.
 =========================================================
 */
 
-const ACCESS_CODE = "NEXUS2026";
+const API = "https://JOUW-PHP-DOMEIN.nl/api.php";
 
 
-/*
-=========================================================
-DOWNLOAD STATUS
-=========================================================
-*/
+function showMessage(message, type = "info") {
+    const box = document.getElementById("accountMessage");
 
-const DOWNLOAD_USED_KEY = "nexus_download_used";
+    if (!box) return;
 
-
-/*
-=========================================================
-TOEGANG ACTIVEREN
-=========================================================
-*/
-
-function activateAccess() {
-
-    const input =
-        document.getElementById("accessCode");
-
-    const message =
-        document.getElementById("accessMessage");
-
-    const enteredCode =
-        input.value.trim();
-
-
-    if (!enteredCode) {
-
-        message.textContent =
-            "Voer een toegangscode in.";
-
-        message.className =
-            "message error";
-
-        return;
-    }
-
-
-    if (enteredCode !== ACCESS_CODE) {
-
-        message.textContent =
-            "Ongeldige toegangscode.";
-
-        message.className =
-            "message error";
-
-        return;
-    }
-
-
-    /*
-    Toegang opslaan op dit apparaat.
-    */
-
-    localStorage.setItem(
-        "nexus_access",
-        "true"
-    );
-
-
-    message.textContent =
-        "✓ Toegang geactiveerd.";
-
-    message.className =
-        "message success";
-
-
-    input.value = "";
-
-
-    setTimeout(() => {
-
-        message.textContent =
-            "Je hebt nu toegang tot de download.";
-
-        message.className =
-            "message info";
-
-    }, 1200);
+    box.textContent = message;
+    box.className = "account-status " + type;
 }
 
 
-/*
-=========================================================
-DOWNLOAD
-=========================================================
-*/
-
-function requestDownload(type) {
-
-    const hasAccess =
-        localStorage.getItem(
-            "nexus_access"
-        ) === "true";
+function scrollToAccount() {
+    document.getElementById("account")?.scrollIntoView({
+        behavior: "smooth",
+        block: "center"
+    });
+}
 
 
-    const hasDownloaded =
-        localStorage.getItem(
-            DOWNLOAD_USED_KEY
-        ) === "true";
+async function api(action, method = "GET", data = null) {
+
+    const options = {
+        method,
+        credentials: "include",
+        headers: {}
+    };
+
+    if (data !== null) {
+        options.headers["Content-Type"] = "application/json";
+        options.body = JSON.stringify(data);
+    }
+
+    const response = await fetch(
+        API + "?action=" + encodeURIComponent(action),
+        options
+    );
+
+    let result;
+
+    try {
+        result = await response.json();
+    } catch {
+        throw new Error("De server gaf geen geldige JSON terug.");
+    }
+
+    if (!response.ok) {
+        throw new Error(result.message || "Er ging iets mis.");
+    }
+
+    return result;
+}
 
 
-    /*
-    -----------------------------------------
-    GEEN TOEGANG
-    -----------------------------------------
-    */
+async function registerAccount() {
 
-    if (!hasAccess) {
+    const username =
+        document.getElementById("accountUsername").value.trim();
 
-        const message =
-            document.getElementById(
-                "accessMessage"
-            );
+    const email =
+        document.getElementById("accountEmail").value.trim();
 
-        message.textContent =
-            "Je hebt nog geen downloadtoegang.";
-
-        message.className =
-            "message error";
+    const password =
+        document.getElementById("accountPassword").value;
 
 
-        document
-            .getElementById("accessCode")
-            .focus();
-
-
+    if (!username || !email || !password) {
+        showMessage(
+            "Vul gebruikersnaam, e-mail en wachtwoord in.",
+            "error"
+        );
         return;
     }
 
 
-    /*
-    -----------------------------------------
-    AL GEDOWNLOAD
-    -----------------------------------------
-    */
+    if (password.length < 8) {
+        showMessage(
+            "Je wachtwoord moet minimaal 8 tekens bevatten.",
+            "error"
+        );
+        return;
+    }
 
-    if (hasDownloaded) {
 
-        alert(
-            "Deze download is al gebruikt op dit apparaat."
+    showMessage("Account wordt aangemaakt...", "info");
+
+
+    try {
+
+        const result = await api(
+            "register",
+            "POST",
+            {
+                username,
+                email,
+                password
+            }
         );
 
+
+        if (!result.success) {
+            showMessage(
+                result.message || "Registreren mislukt.",
+                "error"
+            );
+            return;
+        }
+
+
+        showMessage(
+            "Account aangemaakt! Je kunt nu inloggen.",
+            "success"
+        );
+
+    } catch (error) {
+
+        showMessage(
+            error.message,
+            "error"
+        );
+    }
+}
+
+
+async function login() {
+
+    const email =
+        document.getElementById("accountEmail").value.trim();
+
+    const password =
+        document.getElementById("accountPassword").value;
+
+
+    if (!email || !password) {
+        showMessage(
+            "Vul je e-mail en wachtwoord in.",
+            "error"
+        );
         return;
     }
 
 
-    /*
-    -----------------------------------------
-    BESTAND KIEZEN
-    -----------------------------------------
-    */
-
-    let file = "";
+    showMessage("Inloggen...", "info");
 
 
-    if (type === "exe") {
+    try {
 
-        file =
-            "downloads/NEXUS_AUTOMATION.exe";
+        const result = await api(
+            "login",
+            "POST",
+            {
+                email,
+                password
+            }
+        );
 
-    } else if (type === "zip") {
 
-        file =
-            "downloads/NEXUS_AUTOMATION.zip";
+        if (!result.success) {
+            showMessage(
+                result.message || "Inloggen mislukt.",
+                "error"
+            );
+            return;
+        }
+
+
+        showMessage(
+            "Je bent ingelogd.",
+            "success"
+        );
+
+
+        await loadAccount();
+
+    } catch (error) {
+
+        showMessage(
+            error.message,
+            "error"
+        );
+    }
+}
+
+
+async function logout() {
+
+    try {
+        await api("logout", "POST");
+    } catch (error) {
+        console.error(error);
+    }
+
+    location.reload();
+}
+
+
+async function loadAccount() {
+
+    try {
+
+        const result = await api("me");
+
+
+        if (!result.loggedIn) {
+            showLoggedOut();
+            return;
+        }
+
+
+        showLoggedIn(result.user);
+
+
+    } catch (error) {
+
+        console.error(
+            "Accountcontrole mislukt:",
+            error
+        );
+    }
+}
+
+
+function showLoggedOut() {
+
+    document.getElementById("loginForm").style.display = "grid";
+    document.getElementById("userCard").style.display = "none";
+    document.getElementById("adminPanel").style.display = "none";
+
+    document.getElementById("accountIntro").textContent =
+        "Maak een account of log in om je persoonlijke downloadcredits te gebruiken.";
+}
+
+
+function showLoggedIn(user) {
+
+    document.getElementById("loginForm").style.display = "none";
+    document.getElementById("userCard").style.display = "flex";
+
+    document.getElementById("usernameDisplay").textContent =
+        user.username;
+
+    document.getElementById("creditsDisplay").textContent =
+        user.credits;
+
+
+    document.getElementById("accountIntro").textContent =
+        "Je account is actief.";
+
+
+    if (user.admin) {
+
+        document.getElementById("adminPanel").style.display =
+            "block";
+
+        loadAdminUsers();
 
     } else {
 
-        alert(
-            "Ongeldig downloadtype."
+        document.getElementById("adminPanel").style.display =
+            "none";
+    }
+}
+
+
+async function requestDownload(type) {
+
+    try {
+
+        const account = await api("me");
+
+
+        if (!account.loggedIn) {
+
+            showMessage(
+                "Log eerst in om te downloaden.",
+                "error"
+            );
+
+            scrollToAccount();
+
+            return;
+        }
+
+
+        if (account.user.credits <= 0) {
+
+            showMessage(
+                "Je hebt geen downloadcredits.",
+                "error"
+            );
+
+            scrollToAccount();
+
+            return;
+        }
+
+
+        /*
+         * De uiteindelijke beveiligde download hoort
+         * via api.php?action=download te lopen.
+         *
+         * Deze code haalt het bestand als blob op,
+         * zodat het backend eerst het account en
+         * de credits kan controleren.
+         */
+
+        showMessage(
+            "Download wordt voorbereid...",
+            "info"
         );
 
+
+        const response = await fetch(
+            API +
+            "?action=download&type=" +
+            encodeURIComponent(type),
+            {
+                method: "GET",
+                credentials: "include"
+            }
+        );
+
+
+        if (!response.ok) {
+
+            let message =
+                "Download kon niet worden gestart.";
+
+            try {
+                const data = await response.json();
+                message = data.message || message;
+            } catch {}
+
+            throw new Error(message);
+        }
+
+
+        const blob = await response.blob();
+
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = url;
+
+        link.download =
+            type === "exe"
+                ? "NEXUS_AUTOMATION.exe"
+                : "NEXUS_AUTOMATION.zip";
+
+        document.body.appendChild(link);
+
+        link.click();
+
+        link.remove();
+
+        URL.revokeObjectURL(url);
+
+
+        await loadAccount();
+
+
+        showMessage(
+            "Download gestart. Er is 1 credit gebruikt.",
+            "success"
+        );
+
+
+    } catch (error) {
+
+        showMessage(
+            error.message,
+            "error"
+        );
+    }
+}
+
+
+async function loadAdminUsers() {
+
+    const box =
+        document.getElementById("adminUsers");
+
+
+    try {
+
+        const result =
+            await api("admin_users");
+
+
+        if (!result.success) {
+            box.textContent =
+                "Gebruikers konden niet worden geladen.";
+            return;
+        }
+
+
+        box.innerHTML = "";
+
+
+        result.users.forEach(user => {
+
+            const row =
+                document.createElement("div");
+
+            row.className =
+                "admin-user";
+
+
+            const info =
+                document.createElement("div");
+
+            info.innerHTML = `
+                <strong>${escapeHtml(user.username)}</strong>
+                <br>
+                <small>
+                    ${escapeHtml(user.email)}
+                    · ${user.credits} credits
+                    ${user.is_admin ? " · ADMIN" : ""}
+                </small>
+            `;
+
+
+            const buttons =
+                document.createElement("div");
+
+            buttons.className =
+                "admin-buttons";
+
+
+            [1, 5, 10].forEach(amount => {
+
+                const button =
+                    document.createElement("button");
+
+                button.className =
+                    "btn green";
+
+                button.style.minWidth =
+                    "auto";
+
+                button.style.padding =
+                    "9px 12px";
+
+                button.textContent =
+                    "+" + amount;
+
+                button.onclick =
+                    () => giveCredits(
+                        user.id,
+                        amount
+                    );
+
+                buttons.appendChild(button);
+            });
+
+
+            if (!user.is_admin) {
+
+                const adminButton =
+                    document.createElement("button");
+
+                adminButton.className =
+                    "btn yellow";
+
+                adminButton.style.minWidth =
+                    "auto";
+
+                adminButton.style.padding =
+                    "9px 12px";
+
+                adminButton.textContent =
+                    "ADMIN";
+
+                adminButton.onclick =
+                    () => makeAdmin(user.id);
+
+                buttons.appendChild(
+                    adminButton
+                );
+            }
+
+
+            row.appendChild(info);
+
+            row.appendChild(buttons);
+
+            box.appendChild(row);
+        });
+
+
+    } catch (error) {
+
+        box.textContent =
+            error.message;
+    }
+}
+
+
+async function giveCredits(userId, amount) {
+
+    try {
+
+        await api(
+            "give_credits",
+            "POST",
+            {
+                user_id: userId,
+                amount
+            }
+        );
+
+
+        await loadAdminUsers();
+
+
+    } catch (error) {
+
+        alert(error.message);
+    }
+}
+
+
+async function makeAdmin(userId) {
+
+    if (!confirm(
+        "Deze gebruiker admin maken?"
+    )) {
         return;
     }
 
 
-    /*
-    -----------------------------------------
-    DOWNLOAD STARTEN
-    -----------------------------------------
-    */
+    try {
 
-    const link =
-        document.createElement("a");
-
-    link.href = file;
-
-    link.download = "";
-
-    document.body.appendChild(link);
-
-    link.click();
-
-    document.body.removeChild(link);
-
-
-    /*
-    -----------------------------------------
-    DOWNLOAD ALS GEBRUIKT MARKEREN
-    -----------------------------------------
-    */
-
-    localStorage.setItem(
-        DOWNLOAD_USED_KEY,
-        "true"
-    );
-
-
-    /*
-    -----------------------------------------
-    KNOPPEN UITSCHAKELEN
-    -----------------------------------------
-    */
-
-    const buttons =
-        document.querySelectorAll(
-            '#download .download-row button'
+        await api(
+            "make_admin",
+            "POST",
+            {
+                user_id: userId
+            }
         );
 
 
-    buttons.forEach(button => {
-
-        button.disabled = true;
-
-        button.style.opacity = "0.45";
-
-        button.style.cursor =
-            "not-allowed";
-
-        button.textContent =
-            "DOWNLOAD GEBRUIKT";
-
-    });
+        await loadAdminUsers();
 
 
-    /*
-    -----------------------------------------
-    MELDING
-    -----------------------------------------
-    */
+    } catch (error) {
 
-    const message =
-        document.getElementById(
-            "accessMessage"
-        );
-
-
-    message.textContent =
-        "✓ Download gestart. Je kunt deze download niet opnieuw gebruiken.";
-
-    message.className =
-        "message success";
+        alert(error.message);
+    }
 }
 
 
-/*
-=========================================================
-BIJ HET OPENEN VAN DE WEBSITE
-=========================================================
-*/
+function escapeHtml(value) {
+
+    return String(value)
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+
 
 document.addEventListener(
     "DOMContentLoaded",
-    function() {
-
-        const hasAccess =
-            localStorage.getItem(
-                "nexus_access"
-            ) === "true";
-
-
-        const hasDownloaded =
-            localStorage.getItem(
-                DOWNLOAD_USED_KEY
-            ) === "true";
-
-
-        const message =
-            document.getElementById(
-                "accessMessage"
-            );
-
-
-        /*
-        -----------------------------------------
-        TOEGANG BESTAAT
-        -----------------------------------------
-        */
-
-        if (hasAccess && !hasDownloaded) {
-
-            message.textContent =
-                "✓ Je hebt downloadtoegang.";
-
-            message.className =
-                "message success";
-        }
-
-
-        /*
-        -----------------------------------------
-        DOWNLOAD IS AL GEBRUIKT
-        -----------------------------------------
-        */
-
-        if (hasDownloaded) {
-
-            message.textContent =
-                "Deze download is al gebruikt op dit apparaat.";
-
-            message.className =
-                "message error";
-
-
-            const buttons =
-                document.querySelectorAll(
-                    '#download .download-row button'
-                );
-
-
-            buttons.forEach(button => {
-
-                button.disabled = true;
-
-                button.style.opacity = "0.45";
-
-                button.style.cursor =
-                    "not-allowed";
-
-                button.textContent =
-                    "DOWNLOAD GEBRUIKT";
-
-            });
-        }
-
-    }
-);
-
-
-/*
-=========================================================
-ESCAPE TOETS
-=========================================================
-*/
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (event.key === "Escape") {
-
-            const input =
-                document.getElementById(
-                    "accessCode"
-                );
-
-            if (input) {
-                input.value = "";
-            }
-
-        }
-
-    }
+    loadAccount
 );
 
 </script>
 
-
+</body>
+</html>
